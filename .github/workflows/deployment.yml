@@ -48,18 +48,18 @@ jobs:
             echo "IMAGE_TAG=${{env.REGISTRY}}/${{env.NAME_SPACE}}/${{env.APP_NAME}}:devbuild-${{env.BRANCH_NAME}}-${{env.RUN_ID}}"  >> $GITHUB_ENV
          fi
 
-    - name: Build Docker image from nginx with toml file
-      run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-nginx-toml --builder paketobuildpacks/builder:full --descriptor nginx.toml
+    - name: Build Docker image from httpd with toml file
+      run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-httpd-toml --builder paketobuildpacks/builder:full --descriptor httpd.toml
 
     - name: Login to AWS ECR
       run : sudo aws ecr get-login-password --region ap-south-1 | sudo docker login --username AWS --password-stdin 773120352783.dkr.ecr.ap-south-1.amazonaws.com
 
-    - name: Tag Docker image of nginx toml file
-      run:  docker tag ${{env.APP_NAME}}:${{env.RUN_ID}}-nginx-toml ${{env.IMAGE_TAG}}-nginx-toml
+    - name: Tag Docker image of httpd toml file
+      run:  docker tag ${{env.APP_NAME}}:${{env.RUN_ID}}-httpd-toml ${{env.IMAGE_TAG}}-httpd-toml
 
-    - name: Push Docker image nginx-toml
-      run:  sudo docker push ${{env.IMAGE_TAG}}-nginx-toml
+    - name: Push Docker image httpd-toml
+      run:  sudo docker push ${{env.IMAGE_TAG}}-httpd-toml
 
-    - name: Run Docker image nginx-toml
-      run:  docker run -d -p 4201:8080 ${{env.IMAGE_TAG}}-nginx-toml
+    - name: Run Docker image httpd-toml
+      run:  docker run -d -p 4202:8080 ${{env.IMAGE_TAG}}-httpd-toml
 
