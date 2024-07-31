@@ -58,7 +58,7 @@ jobs:
       run:  docker tag ${{env.APP_NAME}}:${{env.RUN_ID}}-nginx-toml ${{env.IMAGE_TAG}}-nginx-toml
 
     - name: Push Docker image nginx-toml
-      run:  docker push ${{env.IMAGE_TAG}}-nginx-toml
+      run:  sudo docker push ${{env.IMAGE_TAG}}-nginx-toml
 
     - name: Run Docker image nginx-toml
       run:  docker run -d -p 4201:8080 ${{env.IMAGE_TAG}}-nginx-toml
