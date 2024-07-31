@@ -54,12 +54,6 @@ jobs:
     - name: Build Docker image from httpd with toml file
       run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-httpd-toml --builder paketobuildpacks/builder:full --descriptor httpd.toml
 
-    - name: Build Docker image from nginx cmd
-      run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-nginx --builder paketobuildpacks/builder:full --buildpack paketo-buildpacks/web-servers --env BP_NODE_VERSION=18.16.0 --env BP_NODE_RUN_SCRIPTS=build:nginx --env BP_NGINX_VERSION="1.19.8" --env BP_WEB_SERVER=nginx --env BP_WEB_SERVER_ENABLE_PUSH_STATE=true --env BP_WEB_SERVER_FORCE_HTTPS=false --env BP_WEB_SERVER_ROOT=dist/angular-docker-poc
-
-    - name: Build Docker image from httpd cmd
-      run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-httpd --builder paketobuildpacks/builder:full --buildpack paketo-buildpacks/web-servers --env BP_NODE_VERSION=18.16.0 --env BP_NODE_RUN_SCRIPTS=build:httpd --env BP_NGINX_VERSION="2.4.46" --env BP_WEB_SERVER=httpd --env BP_WEB_SERVER_ENABLE_PUSH_STATE=true --env BP_WEB_SERVER_FORCE_HTTPS=false --env BP_WEB_SERVER_ROOT=dist/angular-docker-poc
-
     - name: Login to AWS ECR
       run : sudo aws ecr get-login-password --region ap-south-1 | sudo docker login --username AWS --password-stdin 773120352783.dkr.ecr.ap-south-1.amazonaws.com
 
@@ -69,23 +63,11 @@ jobs:
     - name: Tag Docker image of httpd toml file
       run:  docker tag ${{env.APP_NAME}}:${{env.RUN_ID}}-https-toml ${{env.IMAGE_TAG}}-httpd-toml
 
-    - name: Tag Docker image of nginx
-      run:  docker tag ${{env.APP_NAME}}:${{env.RUN_ID}}-nginx ${{env.IMAGE_TAG}}-nginx
-
-    - name: Tag Docker image of httpd
-      run:  docker tag ${{env.APP_NAME}}:${{env.RUN_ID}}-httpd ${{env.IMAGE_TAG}}-httpd
-
     - name: Push Docker image nginx-toml
       run:  docker push ${{env.IMAGE_TAG}}-nginx-toml
 
     - name: Push Docker image httpd-toml
       run:  docker push ${{env.IMAGE_TAG}}-httpd-toml
-
-    - name: Push Docker image nginx
-      run:  docker push ${{env.IMAGE_TAG}}-nginx
-
-    - name: Push Docker image httpd
-      run:  docker push ${{env.IMAGE_TAG}}-httpd
 
     - name: Run Docker image nginx-toml
       run:  docker run -d -p 4201:8080 ${{env.IMAGE_TAG}}-nginx-toml
@@ -93,8 +75,3 @@ jobs:
     - name: Run Docker image httpd-toml
       run:  docker run -d -p 4202:8080 ${{env.IMAGE_TAG}}-httpd-toml
 
-    - name: Run Docker image nginx
-      run:  docker run -d -p 4203:8080 ${{env.IMAGE_TAG}}-nginx
-
-    - name: Run Docker image httpd
-      run:  docker run -d -p 4204:8080 ${{env.IMAGE_TAG}}-httpd
