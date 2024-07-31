@@ -54,11 +54,11 @@ jobs:
     - name: Build Docker image from httpd with toml file
       run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-httpd-toml --builder paketobuildpacks/builder:full --descriptor httpd.toml
 
-    - name: Build Docker image from httpd cmd
-      run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-nginx --builder paketobuildpacks/builder:full --buildpack paketo-buildpacks/web-servers --env BP_NODE_VERSION=18.16.0 --env BP_NODE_RUN_SCRIPTS=build:nginx --env BP_NGINX_VERSION="1.19.8" --env BP_WEB_SERVER=nginx --env BP_WEB_SERVER_ENABLE_PUSH_STATE=true --env BP_WEB_SERVER_FORCE_HTTPS=false	--env BP_WEB_SERVER_ROOT=dist/angular-docker-poc
-
     - name: Build Docker image from nginx cmd
-      run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-httpd --builder paketobuildpacks/builder:full --buildpack paketo-buildpacks/web-servers --env BP_NODE_VERSION=18.16.0 --env BP_NODE_RUN_SCRIPTS=build:httpd --env BP_NGINX_VERSION="2.4.46" --env BP_WEB_SERVER=httpd --env BP_WEB_SERVER_ENABLE_PUSH_STATE=true --env BP_WEB_SERVER_FORCE_HTTPS=false	--env BP_WEB_SERVER_ROOT=dist/angular-docker-poc
+      run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-nginx --builder paketobuildpacks/builder:full --buildpack paketo-buildpacks/web-servers --env BP_NODE_VERSION=18.16.0 --env BP_NODE_RUN_SCRIPTS=build:nginx --env BP_NGINX_VERSION="1.19.8" --env BP_WEB_SERVER=nginx --env BP_WEB_SERVER_ENABLE_PUSH_STATE=true --env BP_WEB_SERVER_FORCE_HTTPS=false --env BP_WEB_SERVER_ROOT=dist/angular-docker-poc
+
+    - name: Build Docker image from httpd cmd
+      run:  pack build ${{env.APP_NAME}}:${{env.RUN_ID}}-httpd --builder paketobuildpacks/builder:full --buildpack paketo-buildpacks/web-servers --env BP_NODE_VERSION=18.16.0 --env BP_NODE_RUN_SCRIPTS=build:httpd --env BP_NGINX_VERSION="2.4.46" --env BP_WEB_SERVER=httpd --env BP_WEB_SERVER_ENABLE_PUSH_STATE=true --env BP_WEB_SERVER_FORCE_HTTPS=false --env BP_WEB_SERVER_ROOT=dist/angular-docker-poc
 
     - name: Login to AWS ECR
       run : sudo aws ecr get-login-password --region ap-south-1 | sudo docker login --username AWS --password-stdin 773120352783.dkr.ecr.ap-south-1.amazonaws.com
