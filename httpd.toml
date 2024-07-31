@@ -1,0 +1,37 @@
+[server]
+port = 5656
+[build]
+exclude = [
+    "/README.md",
+]
+
+  [[build.buildpacks]]
+  uri = "paketo-buildpacks/web-servers"
+
+  [[ build.env ]]
+    name="BP_NODE_VERSION"
+    value="18.16.0"
+
+  [[ build.env ]]
+    name="BP_NODE_RUN_SCRIPTS"
+    value="build:httpd"
+
+  [[ build.env ]]
+    name="BP_HTTPD_VERSION"
+    value="2.4.46"
+
+  [[ build.env ]]
+    name="BP_WEB_SERVER"
+    value="httpd"
+
+  [[ build.env ]]
+    name="BP_WEB_SERVER_ROOT"
+    value="dist/angular-docker-poc"
+
+  [[ build.env ]]
+    name="BP_WEB_SERVER_ENABLE_PUSH_STATE"
+    value="true"
+
+  [[ build.env ]]
+    name="BP_WEB_SERVER_FORCE_HTTPS"
+    value="false"
