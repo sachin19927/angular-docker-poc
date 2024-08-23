@@ -61,5 +61,3 @@ jobs:
 
     - name: Run Docker image nginx-toml
       run:  docker run -d -p 4201:8080 ${{env.IMAGE_TAG}}-nginx-toml
-
-      run:  docker run -d -p 4204:8080 --env PORT=8080 ${{env.IMAGE_TAG}}-httpd
